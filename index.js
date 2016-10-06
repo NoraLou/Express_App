@@ -1,5 +1,8 @@
 var express = require('express');
+var fortune = require('./lib/fortune.js')
+
 var app = express();
+
 app.set('port', process.env.PORT || 3300);
 
 
@@ -17,8 +20,9 @@ app.get('/', function(req, res) {
 });
 
 app.get('/about', function(req, res) {
-  res.render('about');
-})
+  res.render('about', { fortune: fortune.getFortune() } );
+});
+
 
 // custom 404 page
 app.use(function(req, res){ res.type('text/plain');
@@ -37,3 +41,13 @@ app.listen(app.get('port'), function(){
 console.log( 'Express started on http://localhost:' +
         app.get('port') + '; press Ctrl-C to terminate.' );
 });
+
+var fortuneCookies = [
+"Conquer your fears or they will conquer you.", "Rivers need springs.",
+"Do not fear what you don't know.",
+"You will have a pleasant surprise.", "Whenever possible, keep it simple.",
+];
+exports.getFortune = function() {
+var idx = Math.floor(Math.random() * fortuneCookies.length); return fortuneCookies[idx];
+};
+
