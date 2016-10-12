@@ -1,5 +1,5 @@
 var express = require('express');
-//var fortune = require('./lib/fortune.js')
+var fortune = require('./lib/fortune.js')
 
 var app = express();
 
@@ -16,18 +16,19 @@ var handlebars = require('express-handlebars') .create({ defaultLayout:'main' })
 app.use(express.static(__dirname + '/public'));
 
 // middleware to detect test=1 in the querystring. It must appear before we define any routes in which we wish to use it:
-// app.use(function(req, res, next){
-// res.locals.showTests = app.get('env') !== 'production' &&
-//                     req.query.test === '1';
-//             next();
-// });
+
+app.use(function(req, res, next){
+res.locals.showTests = app.get('env') !== 'production' &&
+                    req.query.test === '1';
+            next();
+});
 
 app.get('/', function(req, res) {
   res.render('home');
 });
 
 app.get('/about', function(req, res) {
-  res.render('about');
+  res.render('about', {fortune: fortune.getFortune()});
 });
 
 
