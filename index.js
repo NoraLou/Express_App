@@ -18,6 +18,12 @@ var handlebars = require('express-handlebars') .create({ defaultLayout:'main' })
 app.use(express.static(__dirname + '/public'));
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
+app.use(require('express-session')({
+    resave: false,
+    saveUninitialized: false,
+    secret: credentials.cookieSecret,
+}));
+
 
 // middleware to detect test=1 in the querystring. It must appear before we define any routes in which we wish to use it:
 app.use(function(req, res, next){
